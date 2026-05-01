@@ -22,7 +22,7 @@ export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   return (
     <Link
       href={`/pokemon/${pokemon.name}`}
-      className={`group relative overflow-hidden rounded-[2rem] border border-white/70 bg-gradient-to-br ${getPokemonTypeSurfaceClass(
+      className={`group relative cursor-pointer overflow-hidden rounded-[2rem] border border-white/70 bg-gradient-to-br ${getPokemonTypeSurfaceClass(
         primaryType,
       )} p-5 shadow-[var(--shadow-soft)] transition duration-300 hover:-translate-y-1 hover:shadow-2xl`}
     >

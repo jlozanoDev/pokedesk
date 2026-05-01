@@ -11,21 +11,29 @@ import {
 
 const DEFAULT_POKEMON_LIMIT = 151;
 
+export interface PokemonListParams {
+  limit?: number;
+  offset?: number;
+}
+
 export interface PokemonRepository {
-  getPokemonList(limit?: number): Promise<Pokemon[]>;
+  getPokemonList(params?: PokemonListParams): Promise<Pokemon[]>;
   getPokemonByName(name: string): Promise<Pokemon>;
   getPokemonNames(limit?: number): Promise<string[]>;
 }
 
 export class PokeApiPokemonRepository implements PokemonRepository {
-  async getPokemonList(limit = DEFAULT_POKEMON_LIMIT): Promise<Pokemon[]> {
+  async getPokemonList({
+    limit = DEFAULT_POKEMON_LIMIT,
+    offset = 0,
+  }: PokemonListParams = {}): Promise<Pokemon[]> {
     const { results } = await getPokeApiResource<PokemonListResponseDTO>(
-      `/pokemon?limit=${limit}&offset=0`,
+      `/pokemon?limit=${limit}&offset=${offset}`,
       {
         cache: "force-cache",
         next: {
           revalidate: POKE_API_REVALIDATE_SECONDS,
-          tags: ["pokemon-list"],
+          tags: [`pokemon-list-${offset}-${limit}`],
         },
       },
     );
